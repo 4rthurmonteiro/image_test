@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 
 class ImageTest extends StatefulWidget {
   const ImageTest({
@@ -34,9 +35,24 @@ class _ImageTestState extends State<ImageTest> {
         ),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.network(
             _url!,
+            loadingBuilder: (BuildContext context, Widget child,
+                ImageChunkEvent? loadingProgress) {
+              if (loadingProgress == null) {
+                return child;
+              }
+              return Center(
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes!
+                      : null,
+                ),
+              );
+            },
           ),
           const SizedBox(
             height: 30,
@@ -51,8 +67,31 @@ class _ImageTestState extends State<ImageTest> {
                 }
               });
             },
-            child: Text(
-              _url == _beachUrl ? 'Vamos para o rio!' : 'Vamos para a praia!',
+            child: Container(
+              height: 50,
+              width: 300,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.blue,
+                ),
+                color: Colors.amber,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(
+                    20,
+                  ),
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  _url == _beachUrl
+                      ? 'Vamos para o rio!'
+                      : 'Vamos para a praia!',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
             ),
           ),
         ],
