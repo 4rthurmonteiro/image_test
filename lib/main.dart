@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:image_test/image_test.dart';
+import 'package:image_test/image.dart';
 
 void main() {
   runApp(const MyApp());
